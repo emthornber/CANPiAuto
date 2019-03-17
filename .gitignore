@@ -3,6 +3,7 @@ webserver/*.pyc
 .idea/
 .idea/workspace.xml
 *.o
+*.swp
 c/canpi/obj
 c/canpi/bin
 c/canpi/canpi.log
