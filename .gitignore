@@ -11,4 +11,5 @@ canpi.log
 copyfiles.sh
 /.cproject
 /.project
+/.settings/
 /canpi
