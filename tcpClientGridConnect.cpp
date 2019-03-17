@@ -27,6 +27,9 @@ tcpClientGridConnect::tcpClientGridConnect(log4cpp::Category *logger, tcpServer 
     this->clientType = CLIENT_TYPE::GRID;
     logger->debug("Grid client %d created", id);
     this->config = config;
+    this->msg_processed = 0;
+    this->msg_received = 0;
+    this->running = 0;
     pthread_mutex_init(&m_mutex_in, NULL);
     pthread_cond_init(&m_condv_in, NULL);
 }
