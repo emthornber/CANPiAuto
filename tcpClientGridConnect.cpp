@@ -76,7 +76,7 @@ void tcpClientGridConnect::canMessage(int canid,const char* msg, int dlc){
         byte h2, h1;
         int s;
         char frametype = 'N'; //should be N or R
-        char t[2];
+        char t[3];
         //set frame type
         if ((canid & CAN_RTR_FLAG) == CAN_RTR_FLAG) frametype = 'R';
 
