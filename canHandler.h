@@ -4,19 +4,19 @@
 #include <linux/can.h>
 #include <net/if.h>
 #include <linux/can/raw.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+// #include <stdio.h>
+// #include <stdlib.h>
+// #include <string.h>
 #include <sys/ioctl.h>
-#include <pthread.h>
+// #include <pthread.h>
 #include <unistd.h>
 #include <queue>
-#include <string>
-#include <vector>
-#include <ctime>
+// #include <string>
+// #include <vector>
+// #include <ctime>
 #include <algorithm>
-#include <mutex>
-#include <condition_variable>
+// #include <mutex>
+// #include <condition_variable>
 #include "utils.h"
 #include "opcodes.h"
 #include "gpio.h"

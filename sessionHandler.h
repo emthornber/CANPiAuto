@@ -1,14 +1,14 @@
 #ifndef SESSIONHANDLER_H
 #define SESSIONHANDLER_H
 
-#include <arpa/inet.h> //inet_addr
+// #include <arpa/inet.h> //inet_addr
 #include <log4cpp/Category.hh>
-#include <map>
-#include <time.h>
+// #include <map>
+// #include <time.h>
 #include <string>
-#include <sstream>
+// #include <sstream>
 #include <vector>
-#include <utility>
+// #include <utility>
 
 #include "canHandler.h"
 #include "edSession.h"

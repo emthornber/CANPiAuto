@@ -2,6 +2,7 @@
 webserver/*.pyc
 .idea/
 .idea/workspace.xml
+*.d
 *.o
 *.swp
 c/canpi/obj

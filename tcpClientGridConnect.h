@@ -7,18 +7,19 @@
 #include "msgdata.h"
 #include "utils.h"
 #include "nodeConfigurator.h"
+#include "tcpServer.h"
 
 #include <sys/socket.h>
 #include <arpa/inet.h> //inet_addr
 #include <log4cpp/Category.hh>
-#include <map>
-#include <time.h>
-#include <string>
-#include <sstream>
-#include <vector>
-#include <mutex>
-#include <condition_variable>
-#include <pthread.h>
+// #include <map>
+// #include <time.h>
+// #include <string>
+// #include <sstream>
+// #include <vector>
+// #include <mutex>
+// #include <condition_variable>
+// #include <pthread.h>
 
 
 #define BUFFER_SIZE 1024

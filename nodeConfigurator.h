@@ -1,11 +1,11 @@
 #ifndef NODECONFIGURATOR_H
 #define NODECONFIGURATOR_H
 
-#include <stdio.h>
-#include <stdlib.h>
+// #include <stdio.h>
+// #include <stdlib.h>
 #include <iostream>
 #include <string.h>
-#include <vector>
+// #include <vector>
 #include <log4cpp/Category.hh>
 #include <map>
 #include <fstream>

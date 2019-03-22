@@ -1,42 +1,19 @@
-#include <iostream>
-#include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <libgen.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <sys/ioctl.h>
-#include <sys/uio.h>
-#include <unistd.h>
 #include <signal.h>
 #include <string>
 #include <sys/stat.h>
+#include <unistd.h>
 
 //logger
-#include "log4cpp/Portability.hh"
-#ifdef LOG4CPP_HAVE_UNISTD_H
-#include <unistd.h>
-#endif
-#include <iostream>
 #include "log4cpp/Category.hh"
 #include "log4cpp/Appender.hh"
-#include "log4cpp/FileAppender.hh"
 #include "log4cpp/RollingFileAppender.hh"
 #include "log4cpp/OstreamAppender.hh"
-#ifdef LOG4CPP_HAVE_SYSLOG
-#include "log4cpp/SyslogAppender.hh"
-#endif
-#include "log4cpp/Layout.hh"
-#include "log4cpp/BasicLayout.hh"
 #include "log4cpp/PatternLayout.hh"
-#include "log4cpp/SimpleLayout.hh"
 #include "log4cpp/Priority.hh"
-#include "log4cpp/NDC.hh"
 
 //project classes
-#include "utils.h"
 #include "canHandler.h"
-#include "Turnout.h"
 #include "nodeConfigurator.h"
 #include "sessionHandler.h"
 

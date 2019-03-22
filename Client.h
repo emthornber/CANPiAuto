@@ -1,14 +1,14 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
-#include <string>
-#include <sys/socket.h>
-#include <arpa/inet.h> //inet_addr
-#include <log4cpp/Category.hh>
-#include "utils.h"
+// #include <string>
+// #include <sys/socket.h>
+// #include <arpa/inet.h> //inet_addr
+// #include <log4cpp/Category.hh>
+// #include "utils.h"
 #include "tcpServer.h"
 #include "canHandler.h"
-#include "nodeConfigurator.h"
+// #include "nodeConfigurator.h"
 
 using namespace std;
 
