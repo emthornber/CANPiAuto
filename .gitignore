@@ -5,6 +5,7 @@ webserver/*.pyc
 *.d
 *.o
 *.swp
+*.tar.gz
 c/canpi/obj
 c/canpi/bin
 c/canpi/canpi.log
@@ -13,4 +14,5 @@ copyfiles.sh
 /.cproject
 /.project
 /.settings/
+venv/
 /canpi

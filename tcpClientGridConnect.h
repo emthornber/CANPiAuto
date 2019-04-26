@@ -34,33 +34,44 @@ or remote frame, in position 6 or 10 d0 - d7 are the (up to) 8 data bytes
 
 using namespace std;
 
-class tcpClientGridConnect:public Client
-{
-    public:
-        tcpClientGridConnect(log4cpp::Category *logger,
-                             tcpServer *server, canHandler* can, int client_sock,
-                             struct sockaddr_in client_addr, int id,nodeConfigurator *config);
-        virtual ~tcpClientGridConnect();
-        void start(void *param);
-        void stop();
-        void canMessage(int canid,const char* msg,int dlc);
-    protected:
-    private:
-        int running;
-        pthread_t queueReader;
-        void run(void * param);
-        void handleClientGridMessage(string msg);
-        vector<byte> getBytes(string hex_chars,vector<byte> *bytes);
-        std::queue<string> in_grid_msgs;
-        pthread_mutex_t m_mutex_in;
-        pthread_cond_t  m_condv_in;
-        void run_in_grid_msgs(void* param);
-        static void* thread_entry_grid_in(void *classPtr){
-            ((tcpClientGridConnect*)classPtr)->run_in_grid_msgs(nullptr);
-            return nullptr;
-        }
-		int msg_received;
-		int msg_processed;
+class tcpClientGridConnect : public Client {
+public:
+    tcpClientGridConnect(log4cpp::Category *logger,
+                         tcpServer *server, canHandler *can, int client_sock,
+                         struct sockaddr_in client_addr, int id, nodeConfigurator *config);
+
+    virtual ~tcpClientGridConnect();
+
+    void start(void *param);
+
+    void stop();
+
+    void canMessage(int canid, const char *msg, int dlc);
+
+protected:
+private:
+    int running;
+    pthread_t queueReader;
+
+    void run(void *param);
+
+    void handleClientGridMessage(string msg);
+
+    vector<byte> getBytes(string hex_chars, vector<byte> *bytes);
+
+    std::queue<string> in_grid_msgs;
+    pthread_mutex_t m_mutex_in;
+    pthread_cond_t m_condv_in;
+
+    void run_in_grid_msgs(void *param);
+
+    static void *thread_entry_grid_in(void *classPtr) {
+        ((tcpClientGridConnect *) classPtr)->run_in_grid_msgs(nullptr);
+        return nullptr;
+    }
+
+    int msg_received;
+    int msg_processed;
 };
 
 #endif // TCPCLIENT_H

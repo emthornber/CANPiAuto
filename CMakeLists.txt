@@ -1,0 +1,134 @@
+cmake_minimum_required(VERSION 3.14)
+project(CANPiWi)
+
+set(CMAKE_CXX_STANDARD 14)
+
+include_directories(.)
+include_directories(lib/include)
+include_directories(lib/include/log4cpp)
+include_directories(lib/include/log4cpp/threading)
+include_directories(lib/libconfig-1.5)
+include_directories(lib/libconfig-1.5/lib)
+include_directories(lib/libconfig-1.5/tinytest)
+
+add_executable(CANPiWi
+        lib/include/log4cpp/threading/BoostThreads.hh
+        lib/include/log4cpp/threading/DummyThreads.hh
+        lib/include/log4cpp/threading/MSThreads.hh
+        lib/include/log4cpp/threading/OmniThreads.hh
+        lib/include/log4cpp/threading/PThreads.hh
+        lib/include/log4cpp/threading/Threading.hh
+        lib/include/log4cpp/AbortAppender.hh
+        lib/include/log4cpp/Appender.hh
+        lib/include/log4cpp/AppendersFactory.hh
+        lib/include/log4cpp/AppenderSkeleton.hh
+        lib/include/log4cpp/BasicConfigurator.hh
+        lib/include/log4cpp/BasicLayout.hh
+        lib/include/log4cpp/BufferingAppender.hh
+        lib/include/log4cpp/Category.hh
+        lib/include/log4cpp/CategoryStream.hh
+        lib/include/log4cpp/config-MinGW32.h
+        lib/include/log4cpp/config-openvms.h
+        lib/include/log4cpp/config-win32.h
+        lib/include/log4cpp/config.h
+        lib/include/log4cpp/Configurator.hh
+        lib/include/log4cpp/convenience.h
+        lib/include/log4cpp/DailyRollingFileAppender.hh
+        lib/include/log4cpp/Export.hh
+        lib/include/log4cpp/FactoryParams.hh
+        lib/include/log4cpp/FileAppender.hh
+        lib/include/log4cpp/Filter.hh
+        lib/include/log4cpp/FixedContextCategory.hh
+        lib/include/log4cpp/HierarchyMaintainer.hh
+        lib/include/log4cpp/IdsaAppender.hh
+        lib/include/log4cpp/Layout.hh
+        lib/include/log4cpp/LayoutAppender.hh
+        lib/include/log4cpp/LayoutsFactory.hh
+        lib/include/log4cpp/LevelEvaluator.hh
+        lib/include/log4cpp/LoggingEvent.hh
+        lib/include/log4cpp/Manipulator.hh
+        lib/include/log4cpp/NDC.hh
+        lib/include/log4cpp/NTEventLogAppender.hh
+        lib/include/log4cpp/OstreamAppender.hh
+        lib/include/log4cpp/PassThroughLayout.hh
+        lib/include/log4cpp/PatternLayout.hh
+        lib/include/log4cpp/Portability.hh
+        lib/include/log4cpp/Priority.hh
+        lib/include/log4cpp/PropertyConfigurator.hh
+        lib/include/log4cpp/RemoteSyslogAppender.hh
+        lib/include/log4cpp/RollingFileAppender.hh
+        lib/include/log4cpp/SimpleConfigurator.hh
+        lib/include/log4cpp/SimpleLayout.hh
+        lib/include/log4cpp/StringQueueAppender.hh
+        lib/include/log4cpp/SyslogAppender.hh
+        lib/include/log4cpp/TimeStamp.hh
+        lib/include/log4cpp/TriggeringEventEvaluator.hh
+        lib/include/log4cpp/TriggeringEventEvaluatorFactory.hh
+        lib/include/log4cpp/Win32DebugAppender.hh
+        lib/include/grammar.h
+        lib/include/libconfig.h
+        lib/include/libconfig.h++
+        lib/include/libconfig.hh
+        lib/include/parsectx.h
+        lib/include/scanctx.h
+        lib/include/scanner.h
+        lib/include/strbuf.h
+        lib/include/wincompat.h
+        lib/libconfig-1.5/contrib/cmake/src/main.cpp
+        lib/libconfig-1.5/contrib/libconfig-ruby/ext/rconfig.c
+        lib/libconfig-1.5/contrib/copy_setting.c
+        lib/libconfig-1.5/examples/c/example1.c
+        lib/libconfig-1.5/examples/c/example2.c
+        lib/libconfig-1.5/examples/c/example3.c
+        lib/libconfig-1.5/examples/c++/example1.cpp
+        lib/libconfig-1.5/examples/c++/example2.cpp
+        lib/libconfig-1.5/examples/c++/example3.cpp
+        lib/libconfig-1.5/examples/c++/example4.cpp
+        lib/libconfig-1.5/lib/grammar.c
+        lib/libconfig-1.5/lib/grammar.h
+        lib/libconfig-1.5/lib/libconfig.c
+        lib/libconfig-1.5/lib/libconfig.h
+        lib/libconfig-1.5/lib/libconfig.h++
+        lib/libconfig-1.5/lib/libconfig.hh
+        lib/libconfig-1.5/lib/libconfigcpp.c++
+        lib/libconfig-1.5/lib/libconfigcpp.cc
+        lib/libconfig-1.5/lib/parsectx.h
+        lib/libconfig-1.5/lib/scanctx.c
+        lib/libconfig-1.5/lib/scanctx.h
+        lib/libconfig-1.5/lib/scanner.c
+        lib/libconfig-1.5/lib/scanner.h
+        lib/libconfig-1.5/lib/strbuf.c
+        lib/libconfig-1.5/lib/strbuf.h
+        lib/libconfig-1.5/lib/wincompat.h
+        lib/libconfig-1.5/tests/tests.c
+        lib/libconfig-1.5/tinytest/tinytest.c
+        lib/libconfig-1.5/tinytest/tinytest.h
+        lib/libconfig-1.5/ac_config.h
+        canHandler.cpp
+        canHandler.h
+        Client.cpp
+        Client.h
+        edSession.cpp
+        edSession.h
+        frameCAN.cpp
+        frameCAN.h
+        gpio.cpp
+        gpio.h
+        main.cpp
+        msgdata.h
+        nodeConfigurator.cpp
+        nodeConfigurator.h
+        opcodes.h
+        sessionHandler.cpp
+        sessionHandler.h
+        tcpClient.cpp
+        tcpClient.h
+        tcpClientGridConnect.cpp
+        tcpClientGridConnect.h
+        tcpServer.cpp
+        tcpServer.h
+        test.cpp
+        testregex.cpp
+        Turnout.cpp
+        Turnout.h
+        utils.h)

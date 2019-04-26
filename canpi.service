@@ -1,0 +1,9 @@
+[Unit]
+Description=Interface to a MERG CAN Pi CAP or CAN Pi Zero
+After=network.target
+Requires=avahi-daemon.socket remote-fs.target syslog.socket
+
+[Service]
+ExecStart=/home/pi/canpi/canpi
+[Install]
+
