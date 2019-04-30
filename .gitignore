@@ -16,3 +16,4 @@ copyfiles.sh
 /.settings/
 venv/
 /canpi
+cmake-build-debug/
