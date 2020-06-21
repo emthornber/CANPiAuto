@@ -357,7 +357,7 @@ setup_ap_mode()
     echo "Restarting wlan0"
     sudo ip link set wlan0 down
     setup_iface_ap
-    if [[ $ap_no_password == "true" || $ap_no_password == "True" || $ap_no_password == "TRUE" ]];then
+    if [ ${ap_no_password,,} == "true" ];then
         setup_hostapd_no_password
     else
         setup_hostapd
@@ -801,7 +801,7 @@ case "$1" in
     configure)
         echo "Configuring the services"
         blink_red_led
-        if [[ $ap_mode == "true" || $ap_mode == "True" || $ap_mode == "TRUE" ]];then
+        if [ ${ap_mode,,} == "true" ];then
            echo "Starting configuration for AP Mode"
            setup_ap_mode
         else
