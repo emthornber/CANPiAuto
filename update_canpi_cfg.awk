@@ -16,8 +16,8 @@ BEGIN {
     if ( length(APPASSWD) != 0 ) AP_NO_PASSWD = "False"
 }
 /ap_ssid=/ { print $1 FS "\""APSSID"\"" ; next }
-# Force canpi mode to be WAP
-/ap_mode=/ {print  $1 FS "\"True\"" ; next }
+# Force canpi mode to be DHCP Client
+/ap_mode=/ {print  $1 FS "\"False\"" ; next }
 /ap_no_password=/ { print $1 FS "\""AP_NO_PASSWD"\"" ; next }
 /ap_password=/ { print $1 FS "\""APPASSWD"\"" ; next }
 /router_ssid=/ { print $1 FS "\""RSSID"\"" ; next }
