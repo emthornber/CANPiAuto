@@ -384,15 +384,15 @@ setup_wifi_mode(){
     setup_iface_wifi
     setup_wpa_supplicant
 
-    echo "Stoping wlan0"
+    echo "Stopping wlan0"
     sudo ip link set wlan0 down
 
-    echo "Stoping the hostapd service"
+    echo "Stopping the hostapd service"
     sudo service hostapd stop
     #sudo /etc/init.d/hostapd stop
     sleep 1
 
-    echo "Stoping the DHCP service"
+    echo "Stopping the DHCP service"
     sudo service isc-dhcp-server stop
     #sudo /etc/init.d/isc-dhcp-server stop
     sleep 1
