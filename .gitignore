@@ -7,4 +7,6 @@ c/canpi/obj
 c/canpi/bin
 c/canpi/canpi.log
 canpi.log
+cmake-build-debug/
 copyfiles.sh
+venv/
