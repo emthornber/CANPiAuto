@@ -5,13 +5,13 @@ interface=wlan0
 driver=nl80211
 
 # This is the name of the network
-ssid=SSID
+ssid=|SSID|
 
 # Use the 2.4GHz band
 hw_mode=g
 
 # Use channel 6
-channel=CHANNEL
+channel=|CHANNEL|
 
 # Enable 802.11n
 ieee80211n=1
@@ -35,4 +35,4 @@ wpa=2
 wpa_key_mgmt=WPA-PSK
 
 # The network passphrase
-wpa_passphrase=PASSWORD
+wpa_passphrase=|PASSWORD|

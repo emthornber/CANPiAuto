@@ -53,15 +53,15 @@ fi
 
 #Bonjour files
 bonjour_file="/etc/avahi/services/multiple.service"
-bonjour_template="$dir/multiple.service"
+bonjour_template="$dir/multiple.service.in"
 
 #wpa supplicant files
 wpa_file="/etc/wpa_supplicant/wpa_supplicant.conf"
-wpa_template="$dir/wpa_supplicant.conf"
+wpa_template="$dir/wpa_supplicant.conf.in"
 
 #hostapd files
 hostapd_file="/etc/hostapd/hostapd.conf"
-hostapd_template="$dir/hostapd.conf"
+hostapd_template="$dir/hostapd.conf.in"
 default_hostapd_file="/etc/default/hostapd"
 safe_hostapd_file="$dir/hostapd"
 
@@ -71,8 +71,10 @@ safe_dhcp_file="$dir/isc-dhcp-server"
 
 #interface files
 iface_file="/etc/network/interfaces"
-iface_file_wifi="$dir/interfaces.wifi"
-iface_file_ap="$dir/interfaces.ap"
+iface_dir="${iface_file}.d"
+iface_wifi="$dir/iface.wifi"
+iface_ap="$dir/iface.ap"
+iface_canpi="${iface_dir}/canpi.conf"
 
 get_push_button(){
    pb=`grep button_pin ${config} |cut -d "=" -f 2`
@@ -242,86 +244,39 @@ kill_all_processes(){
 
 setup_bonjour() {
     echo "Configuring the bonjour service"
-    #back the old file
-    #mv $bonjour_file "${bonjour_file}.bak"
-    cp -f $bonjour_template "${bonjour_template}.tmp"
-
-    #change the service name
-    sed -i 's/SERVICENAME/'"$service_name"'/' "${bonjour_template}.tmp"
-
-    #change the port
-    sed -i 's/PORT/'"$tcpport"'/' "${bonjour_template}.tmp"
-    mv -f "${bonjour_template}.tmp" $bonjour_file
+    #change the service name and port
+    sed -e "s/|SERVICENAME|/$service_name/" -e "s/|PORT|/$tcpport/" $bonjour_template > $bonjour_file
 
     #restart the service
-    echo "Restarting the bonjour service"
-    /etc/init.d/avahi-daemon restart
+    systemctl restart avahi-daemon
     sleep 1
-    #r=`/etc/init.d/avahi-daemon status`
-    #echo $r | grep "active (running)"
-    if is_avahi_running;
-    then
-        echo "Bonjour restarted"
-    else
-        echo "Failed to restart Bonjour"
-    fi
+    echo Bonjour service is `systemctl is-active avahi-daemon`
 }
 
 setup_wpa_supplicant(){
     echo "Configuring the WPA supplicant"
-    #back the old file
-    sudo mv -f $wpa_file "${wpa_file}.bak"
-    sudo cp -f $wpa_template $wpa_file
-
-    #change the ssid
-    sudo sed -i 's/SSID/'"$router_ssid"'/' $wpa_file
-
-    #change the password
-    sudo sed -i 's/PASSWORD/'"$router_password"'/' $wpa_file
-
+    #change the ssid and password
+    sed -e "/|SSID|/$router_ssid/" -e "s/|PASSWORD|/$router_password/" $wpa_template > $wpa_file
 }
 
 setup_hostapd(){
     echo "Configuring the hostapd"
-    #back the old file
-    sudo mv -f $hostapd_file "${hostapd_file}.bak"
-    sudo cp -f $hostapd_template $hostapd_file
-
-    #change the ssid
-    sudo sed -i 's/SSID/'"$ap_ssid"'/' $hostapd_file
-
-    #change the password
-    sudo sed -i 's/PASSWORD/'"$ap_password"'/' $hostapd_file
-
-    #change the channel
-    sudo sed -i 's/CHANNEL/'"$ap_channel"'/' $hostapd_file
+    #change the ssid, password, and channel
+    sudo sed -e "s/|SSID|/$ap_ssid/" -e "s/|PASSWORD|/$ap_ssid/" -e "s/|CHANNEL|/$ap_channel/" $hostapd_template > $hostapd_file
 }
 
 setup_hostapd_no_password(){
     echo "Configuring the hostapd with no password"
-    #back the old file
-    sudo mv -f $hostapd_file "${hostapd_file}.bak"
-    sudo cp -f "${hostapd_template}.nopassword" $hostapd_file
-
-    #change the ssid
-    sudo sed -i 's/SSID/'"$ap_ssid"'/' $hostapd_file
-
-    #change the channel
-    sudo sed -i 's/CHANNEL/'"$ap_channel"'/' $hostapd_file
+    #change the ssid and channel
+    sudo sed -e "s/|SSID|/$ap_ssid/" -e "s/|CHANNEL|/$ap_channel/" $hostapd_template | grep -v "|PASSWORD|" > $hostapd_file
 }
 
-
-
 setup_iface_wifi(){
-    #back the old file
-    sudo mv -f $iface_file "${iface_file}.bak"
-    sudo cp -f $iface_file_wifi $iface_file
+    sudo ln -f -s $iface_wifi $iface_canpi
 }
 
 setup_iface_ap(){
-    #back the old file
-    sudo mv -f $iface_file "${iface_file}.bak"
-    sudo cp -f $iface_file_ap $iface_file
+    sudo ln -f -s $iface_ap $iface_canpi
 }
 
 remove_hostapd_default(){
@@ -749,7 +704,7 @@ case "$1" in
     stop)
         stop_webserver
         stop_canpi
-        echo "Stoping bonjour service"
+        echo "Stopping bonjour service"
         /etc/init.d/avahi-daemon stop
         #kill the rest
         kill_all_processes "canpi"
@@ -766,7 +721,7 @@ case "$1" in
     ;;
     stopcanpi)
         stop_canpi
-        echo "Stoping bonjour service"
+        echo "Stopping bonjour service"
         /etc/init.d/avahi-daemon stop
         if [[ $? -eq 1 ]]; then
             exit 1

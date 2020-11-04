@@ -27,10 +27,7 @@ config_boot_config(){
 }
 
 add_can_interface(){
-  f="/etc/network/interfaces"
-  append_to_file "auto can0" $f
-  append_to_file "iface can0 can static" $f
-  append_to_file "bitrate 125000 restart-ms 1000" $f
+  sudo cp ${canpidir}/iface.can0.conf /etc/network/interfaces.d
 }
 
 create_default_canpi_config(){
