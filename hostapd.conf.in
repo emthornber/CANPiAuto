@@ -1,4 +1,5 @@
-# This is the name of the WiFi interface we configured above
+# This is the name of the WiFi interface
+country_code=GB
 interface=wlan0
 
 # Use the nl80211 driver with the brcmfmac driver
@@ -13,11 +14,12 @@ hw_mode=g
 # Use channel 6
 channel=|CHANNEL|
 
-# Enable 802.11n
+# Enable 802.11n and d
 ieee80211n=1
+ieee80211d=1
 
-# Enable WMM
-wmm_enabled=1
+# Disable WiFi MultiMedia
+wmm_enabled=0
 
 # Accept all MAC addresses
 macaddr_acl=0
@@ -33,6 +35,8 @@ wpa=2
 
 # Use a pre-shared key
 wpa_key_mgmt=WPA-PSK
+wpa_pairwise=TKIP
+rsn_pairwise=CCMP
 
 # The network passphrase
 wpa_passphrase=|PASSWORD|
