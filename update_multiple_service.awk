@@ -1,4 +1,5 @@
-# Update hostapd.conf with values from buildroot defconfig file
+# Update hostapd.conf with values from buildroot
+# defconfig file
 #
 #   09 July, 2020 - E M Thornber
 #   Created

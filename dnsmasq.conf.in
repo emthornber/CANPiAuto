@@ -1,8 +1,0 @@
-interface=wlan0	# listening interface
-dhcp-range=192.168.45.50,192.168.45.99,255.255.255.0,24h
-		# pool of ip addresses served via DHCP
-domain=merg.org.uk	# local wireless dns domain
-address=/gw.merg.org.uk/192.168.45.1
-		# alias for this router
-no-resolv
-bind-interfaces

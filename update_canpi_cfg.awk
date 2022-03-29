@@ -1,4 +1,5 @@
-# Update canpi.cfg with values from buildroot defconfig file
+# Update canpi.cfg with values from buildroot
+# defconfig file
 #
 #   21 June, 2020 - E M Thornber
 #   Created
