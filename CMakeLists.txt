@@ -6,6 +6,13 @@ project(CANPiAuto
 
 set(CMAKE_CXX_STANDARD 11)
 
+include(FetchContent)
+FetchContent_Declare(
+	googletest
+	URL https://github.com/google/googletest/archive/refs/tags/release-1.11.0.zip
+)
+FetchContent_MakeAvailable(googletest)
+
 add_executable(canpi
         src/canHandler.cpp
         src/canHandler.h
@@ -41,13 +48,24 @@ target_include_directories(canpi PRIVATE /usr/local/include /usr/include)
 target_link_directories(canpi PRIVATE /usr/local/lib /usr/lib)
 target_link_libraries(canpi PUBLIC log4cpp pthread)
 
-add_executable(test
+add_executable(testcfg
         src/test.cpp)
 
-target_compile_options(test PRIVATE -Wall -Wextra -Wpedantic)
+target_compile_options(testcfg PRIVATE -Wall -Wextra -Wpedantic)
 
 add_executable(testregexp
         src/testregex.cpp)
 
 target_compile_options(testregexp PRIVATE -Wall -Wextra -Wpedantic)
+
+enable_testing()
+
+add_executable( hello_test
+    src/hello_test.cpp)
+
+target_link_libraries(hello_test
+    gtest_main)
+
+include(GoogleTest)
+gtest_discover_tests(hello_test)
 
