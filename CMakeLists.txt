@@ -2,11 +2,11 @@ cmake_minimum_required(VERSION 3.14)
 project(CANPiAuto
         VERSION 0.1.0
         DESCRIPTION "A CBUS interface"
-        LANGUAGE CXX)
+        LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(
+add_executable(canpi
         src/canHandler.cpp
         src/canHandler.h
         src/Client.cpp
@@ -36,4 +36,6 @@ add_executable(
         src/Turnout.h
         src/utils.h)
 
+
 target_compile_options(canpi PRIVATE -Wall -Wextra -Wpedantic)
+target_link_libraries(canpi PUBLIC log4cpp pthread)
