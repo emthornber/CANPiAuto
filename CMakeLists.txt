@@ -21,6 +21,8 @@ add_executable(canpi
         src/msgdata.h
         src/nodeConfigurator.cpp
         src/nodeConfigurator.h
+        src/opc_codes.cpp
+        src/opc_codes.h
         src/opcodes.h
         src/sessionHandler.cpp
         src/sessionHandler.h
@@ -30,12 +32,22 @@ add_executable(canpi
         src/tcpClientGridConnect.h
         src/tcpServer.cpp
         src/tcpServer.h
-        src/test.cpp
-        src/testregex.cpp
         src/Turnout.cpp
         src/Turnout.h
         src/utils.h)
 
-
-target_compile_options(canpi PRIVATE -Wall -Wextra -Wpedantic)
+target_compile_options(canpi PRIVATE -c -Wall -fpermissive -lm -g)
+target_include_directories(canpi PRIVATE /usr/local/include /usr/include)
+target_link_directories(canpi PRIVATE /usr/local/lib /usr/lib)
 target_link_libraries(canpi PUBLIC log4cpp pthread)
+
+add_executable(test
+        src/test.cpp)
+
+target_compile_options(test PRIVATE -Wall -Wextra -Wpedantic)
+
+add_executable(testregexp
+        src/testregex.cpp)
+
+target_compile_options(testregexp PRIVATE -Wall -Wextra -Wpedantic)
+
