@@ -25,8 +25,8 @@ class sessionHandler
     	edSession* createEDSession(int client_id, string edname, long client_ip);
         bool deleteEDSession(int sessionuid);
         bool deleteAllEDSessions(int client_id);
-        void start();
-        void stop();
+        virtual void start();
+        virtual void stop();
     protected:
     private:
         std::vector< edSession*> sessions; //each edsession has a reference for the client

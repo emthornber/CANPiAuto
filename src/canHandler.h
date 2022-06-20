@@ -40,13 +40,13 @@ class canHandler
     public:
         canHandler(log4cpp::Category *logger,int canId);
         virtual ~canHandler();
-        int start(const char* interface);
+        virtual int start(const char* interface);
         int put_to_out_queue(char *msg,int size,CLIENT_TYPE ct);
         int put_to_out_queue(int canid,char *msg,int size,CLIENT_TYPE ct);
         int put_to_incoming_queue(int canid,char *msg,int size,CLIENT_TYPE ct);
-        void stop();
+        virtual void stop();
         void setCanId(int id);
-        int getCanId();
+        virtual int getCanId();
         void setTcpServer(tcpServer * tcpserver);
         void setPins(int pb,int gled, int yled);
         void setNodeNumber(int nn);

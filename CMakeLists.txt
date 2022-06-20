@@ -49,23 +49,35 @@ target_link_directories(canpi PRIVATE /usr/local/lib /usr/lib)
 target_link_libraries(canpi PUBLIC log4cpp pthread)
 
 add_executable(testcfg
-        src/test.cpp)
+        tests/test.cpp)
 
 target_compile_options(testcfg PRIVATE -Wall -Wextra -Wpedantic)
 
 add_executable(testregexp
-        src/testregex.cpp)
+        tests/testregex.cpp)
 
 target_compile_options(testregexp PRIVATE -Wall -Wextra -Wpedantic)
 
 enable_testing()
 
-add_executable( hello_test
-    src/hello_test.cpp)
+add_executable( canmsg_test
+		tests/CANsprintf.cpp tests/CANostream.cpp tests/CANostream.h)
 
-target_link_libraries(hello_test
-    gtest_main)
+target_link_libraries(canmsg_test
+		gtest_main )
+
+#[[
+add_executable(canmsg_typemock
+		src/Client.cpp
+		src/tcpClientGridConnect.cpp
+		src/tcpClientGridConnect_unittest.cpp)
+
+target_link_libraries(canmsg_typemock
+		-no-pie
+		/usr/lib64/typemock/libisolator.a
+		log4cpp
+		gtest_main)
+]]
 
 include(GoogleTest)
-gtest_discover_tests(hello_test)
-
+gtest_discover_tests(canmsg_test)

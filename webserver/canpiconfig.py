@@ -8,26 +8,27 @@ import shlex
 import re
 from subprocess import Popen, PIPE
 
-configpath="/home/pi/canpi/canpi.cfg"
-messageFile="/home/pi/canpi/webserver/msg"
+configpath = "/home/pi/canpi/canpi.cfg"
+messageFile = "/home/pi/canpi/webserver/msg"
 portlimit = 65535
-invalid_ports = [21,22,80]
-
+invalid_ports = [21, 22, 80]
 
 render = web.template.render('templates/')
 urls = ('/', 'index',
-        '/upload' , 'upload',
-        '/viewlog' , 'viewlog'
+        '/upload', 'upload',
+        '/viewlog', 'viewlog'
         )
-app = web.application(urls, globals(),autoreload=True)
+app = web.application(urls, globals(), autoreload=True)
+
 
 def readMessage():
-    msg=""
+    msg = ""
     if os.path.isfile(messageFile) and os.access(messageFile, os.R_OK):
         f = open(messageFile)
-        msg=f.read()
+        msg = f.read()
         f.close()
     return msg
+
 
 def writeMessage(msg):
     try:
@@ -38,64 +39,69 @@ def writeMessage(msg):
         print("Failed to open the message file\n");
         return
 
+
 class configManager:
-    config={}
+    config = {}
+
     def readConfig(self):
         self.config.clear()
         with open(configpath) as f:
             for line in f:
-                #print(line + "\n")
-                if ((line.strip().find("#") >= 0) or (len(line.strip())<1)):
+                # print(line + "\n")
+                if ((line.strip().find("#") >= 0) or (len(line.strip()) < 1)):
                     continue
-                strval = line.strip().replace('"','')
-                strval = strval.strip().replace(';','')
-                strval = strval.strip().replace(' = ','=')
+                strval = line.strip().replace('"', '')
+                strval = strval.strip().replace(';', '')
+                strval = strval.strip().replace(' = ', '=')
                 (key, val) = strval.split('=')
                 self.config[key.strip()] = val
             f.close()
-            #print("\n########## CONFIG ##########\n")
-            #print(self.config)
+            # print("\n########## CONFIG ##########\n")
+            # print(self.config)
 
-    def getValue(self,key):
+    def getValue(self, key):
         if key in self.config:
             return self.config[key]
         return ""
-    #insert a default value if does not exist
-    def getValueInsert(self,key,value):
+
+    # insert a default value if does not exist
+    def getValueInsert(self, key, value):
         if key in self.config:
             return self.config[key]
         else:
-            self.setValue(key,value)
+            self.setValue(key, value)
         return value
 
-    def setValue(self,key,value):
+    def setValue(self, key, value):
         self.config[key] = value
 
     def saveFile(self):
-        #create a copy of the file
+        # create a copy of the file
         print("Saving file")
         tmpfile = configpath + ".tmp"
-        with open(tmpfile,'w+') as f:
-            for k,v in self.config.iteritems():
+        with open(tmpfile, 'w+') as f:
+            for k, v in self.config.iteritems():
                 line = ""
-                #dont put quotes on numbers
-                if k in ["tcpport","cangrid_port","ap_channel","node_number","canid","button_pin","green_led_pin","yellow_led_pin","red_led_pin","start_event_id","orphan_timeout","shutdown_code"]:
+                # dont put quotes on numbers
+                if k in ["tcpport", "cangrid_port", "ap_channel", "node_number", "canid", "button_pin", "green_led_pin",
+                         "yellow_led_pin", "red_led_pin", "start_event_id", "orphan_timeout", "shutdown_code"]:
                     line = k + "=" + v + "\n"
                 else:
                     line = k + "=\"" + v + "\"\n"
-                #print(line)
+                # print(line)
                 f.write(line)
         f.close()
-        #move the file
+        # move the file
         if os.path.exists(tmpfile):
             print("Moving the file")
-           shutil.move(tmpfile,configpath)
+        shutil.move(tmpfile, configpath)
+
 
 cm = configManager()
 cm.readConfig()
 
 id_apmode = "apmode"
-#id_apmode_no_passwd = "ap_no_password"
+# id_apmode_no_passwd = "ap_no_password"
 id_ssid = "ap_ssid"
 id_password = "ap_password"
 id_channel = "ap_channel"
@@ -126,7 +132,7 @@ id_shutdown_code = "shutdown_code"
 id_edserver = "edserver"
 
 desc_apmode = "AP mode"
-#desc_apmode_no_passwd = "No password in AP mode"
+# desc_apmode_no_passwd = "No password in AP mode"
 desc_ssid = "SSID"
 desc_password = "Password"
 desc_channel = "Channel"
@@ -156,36 +162,43 @@ desc_orphan_timeout = "Orphan sessions timeout seconds"
 desc_shutdown_code = "Shutdown code"
 desc_edserver_code = "Enable Engine Drive tcp server"
 
-#validators
+# validators
 wifipasslength = 40
 wifissidlength = 40
 passlength = 8
 ssidlength = 8
 servicelength = 8
 
-ssid_length = form.Validator("SSID length should be between 1 and %d characters" % ssidlength, lambda p: p is None or len(p) > ssidlength)
-passwd_length = form.Validator("Password length should be %d characters" % passlength, lambda p: len(p)!= passlength)
-router_ssid_length = form.Validator("Router SSID length should be between 1 and %d characters" % wifissidlength , lambda p: p is None or len(p) > wifissidlength)
-router_passwd_length = form.Validator("Router password length should be less then %d characters" % wifipasslength, lambda p: len(p) > wifipasslength)
-turnout_length = form.Validator("Turnout name length should less than 11 characters", lambda p: p is None or len(p) > 11)
-service_name_length = form.Validator("Service name length should less than %d characters" % servicelength , lambda p: p is None or len(p) > servicelength)
+ssid_length = form.Validator("SSID length should be between 1 and %d characters" % ssidlength,
+                             lambda p: p is None or len(p) > ssidlength)
+passwd_length = form.Validator("Password length should be %d characters" % passlength, lambda p: len(p) != passlength)
+router_ssid_length = form.Validator("Router SSID length should be between 1 and %d characters" % wifissidlength,
+                                    lambda p: p is None or len(p) > wifissidlength)
+router_passwd_length = form.Validator("Router password length should be less then %d characters" % wifipasslength,
+                                      lambda p: len(p) > wifipasslength)
+turnout_length = form.Validator("Turnout name length should less than 11 characters",
+                                lambda p: p is None or len(p) > 11)
+service_name_length = form.Validator("Service name length should less than %d characters" % servicelength,
+                                     lambda p: p is None or len(p) > servicelength)
 
 
 def configurePi():
-    #time.sleep(3)
-    os.system("sudo /etc/init.d/start_canpi.sh configure")
+    # time.sleep(3)
+    os.system("sudo /etc/init.d/canpi.sh configure")
+
 
 def restartAll():
-    #time.sleep(3)
-    os.system("sudo /etc/init.d/start_canpi.sh restart")
+    # time.sleep(3)
+    os.system("sudo /etc/init.d/canpi.sh restart")
+
 
 def shutdownPi():
-    #time.sleep(3)
-    os.system("sudo /etc/init.d/start_canpi.sh shutdown")
+    # time.sleep(3)
+    os.system("sudo /etc/init.d/canpi.sh shutdown")
+
 
 class index:
-
-    myform=form.Form()
+    myform = form.Form()
 
     def GET(self):
         cm.readConfig()
@@ -195,20 +208,20 @@ class index:
         # Otherwise changes will appear globally
         msg = readMessage()
         writeMessage("")
-        return render.index(form,"Canpi Configuration",msg)
+        return render.index(form, "Canpi Configuration", msg)
 
     def POST(self):
         userData = web.input()
-        ctx=web.ctx
+        ctx = web.ctx
         myuri = ctx.realhome
         form = self.reloadMyForm()
         form.fill()
 
         if id_btn_save in userData:
-            #get all the values and update
+            # get all the values and update
             r = True
             msg = ""
-            r,msg = self.validate_form(form)
+            r, msg = self.validate_form(form)
             if not r:
                 writeMessage(msg)
                 raise web.seeother('/')
@@ -244,7 +257,7 @@ class index:
             cpid = os.fork()
             if cpid == 0:
                 configurePi()
-            return render.reboot("Applying changes and rebooting",myuri)
+            return render.reboot("Applying changes and rebooting", myuri)
 
         if id_btn_update_file in userData:
             print("Upgrade button pressed")
@@ -259,26 +272,26 @@ class index:
         if id_btn_restart in userData:
             print("Restart button pressed")
             writeMessage("")
-            os.system("sudo /etc/init.d/start_canpi.sh restartcanpi")
-            exitcode,out,err = self.get_exitcode_stdout_stderr("ps -ef")
-            msg=""
+            os.system("sudo /etc/init.d/canpi.sh restartcanpi")
+            exitcode, out, err = self.get_exitcode_stdout_stderr("ps -ef")
+            msg = ""
             if "/home/pi/canpi/canpi" in out:
-                msg="Service restarted"
+                msg = "Service restarted"
             else:
-                msg="Restart failed"
-            return render.index(form,"Canpi Configuration",msg)
+                msg = "Restart failed"
+            return render.index(form, "Canpi Configuration", msg)
 
         if id_btn_stop in userData:
             print("Stop button pressed")
             writeMessage("")
-            os.system("sudo /etc/init.d/start_canpi.sh stopcanpi")
-            exitcode,out,err = self.get_exitcode_stdout_stderr("ps -ef")
-            msg=""
+            os.system("sudo /etc/init.d/canpi.sh stopcanpi")
+            exitcode, out, err = self.get_exitcode_stdout_stderr("ps -ef")
+            msg = ""
             if "/home/pi/canpi/canpi" in out:
-                msg="Stop failed"
+                msg = "Stop failed"
             else:
-                msg="Stop successfull"
-            return render.index(form,"Canpi Configuration",msg)
+                msg = "Stop successfull"
+            return render.index(form, "Canpi Configuration", msg)
 
         if id_btn_restart_all in userData:
             print("Restart all button pressed")
@@ -286,7 +299,7 @@ class index:
             cpid = os.fork()
             if cpid == 0:
                 restartAll()
-            return render.reboot("Restarting the webpage and canpi",myuri)
+            return render.reboot("Restarting the webpage and canpi", myuri)
 
         if id_btn_shutdown in userData:
             print("Shutdown button pressed")
@@ -294,24 +307,24 @@ class index:
             cpid = os.fork()
             if cpid == 0:
                 shutdownPi()
-            return render.reboot("Shuting down the pi",myuri)
+            return render.reboot("Shuting down the pi", myuri)
 
-        return render.index(form,"Canpi Configuration","")
+        return render.index(form, "Canpi Configuration", "")
 
-    def validate_form(self,form):
+    def validate_form(self, form):
         global desc_ed_tcpport
         global desc_grid_port
 
-        if len(form[id_ssid].value) > ssidlength or len(form[id_ssid].value) == 0 :
+        if len(form[id_ssid].value) > ssidlength or len(form[id_ssid].value) == 0:
             return False, "SSID length should be between 1 and %d characters" % ssidlength
 
-        if form[id_apmode].checked == True :
+        if form[id_apmode].checked == True:
             if len(form[id_password].value) != passlength and form[id_apmode_no_passwd].checked == False:
                 return False, "Password length should be %d characters" % passlength
         else:
-            if len(form[id_router_ssid].value) > wifissidlength or len(form[id_router_ssid].value) == 0 :
+            if len(form[id_router_ssid].value) > wifissidlength or len(form[id_router_ssid].value) == 0:
                 return False, "Router SSID length should be between 1 and %d characters" % wifissidlength
-            if len(form[id_router_password].value) == 0 or len(form[id_router_password].value) > wifipasslength :
+            if len(form[id_router_password].value) == 0 or len(form[id_router_password].value) > wifipasslength:
                 return False, "Router password length should be less then %d characters" % wifipasslength
 
         if self.isint(form[id_canid].value):
@@ -331,16 +344,20 @@ class index:
         if self.isint(form[id_ed_tcpport].value):
             v = int(form[id_ed_tcpport].value)
             if v <= 0 or v > portlimit or v in invalid_ports:
-                return False, desc_ed_tcpport + "[" + str(v) + "] should be between 1 and " + str(portlimit) + " and not be " + str(invalid_ports)
+                return False, desc_ed_tcpport + "[" + str(v) + "] should be between 1 and " + str(
+                    portlimit) + " and not be " + str(invalid_ports)
         else:
-            return False, desc_ed_tcpport + "[" + str(v) + "] should be between 1 and " + str(portlimit) + " and not be " + str(invalid_ports)
+            return False, desc_ed_tcpport + "[" + str(v) + "] should be between 1 and " + str(
+                portlimit) + " and not be " + str(invalid_ports)
 
         if self.isint(form[id_grid_port].value):
             v1 = int(form[id_grid_port].value)
             if v1 <= 0 or v1 > portlimit or v1 in invalid_ports:
-                return False, desc_grid_port + " should be between 1 and " + str(portlimit) + " and not be " + str(invalid_ports)
+                return False, desc_grid_port + " should be between 1 and " + str(portlimit) + " and not be " + str(
+                    invalid_ports)
         else:
-            return False, desc_grid_port + " should be between 1 and " + str(portlimit) + " and not be " + str(invalid_ports)
+            return False, desc_grid_port + " should be between 1 and " + str(portlimit) + " and not be " + str(
+                invalid_ports)
 
         if v == v1:
             return False, desc_ed_tcpport + " and " + desc_grid_port + " should be different"
@@ -359,8 +376,8 @@ class index:
                 print("Run validation\n")
                 return False, desc_shutdown_code + "[" + str(v) + "] should be between -1 and " + str(portlimit)
         else:
-            return False, desc_shutdown_code + "[" + form[id_shutdown_code].value + "] should be between -1 and " + str(portlimit)
-
+            return False, desc_shutdown_code + "[" + form[id_shutdown_code].value + "] should be between -1 and " + str(
+                portlimit)
 
         if self.isint(form[id_orphan_timeout].value):
             v = int(form[id_orphan_timeout].value)
@@ -370,10 +387,10 @@ class index:
         else:
             return False, desc_orphan_timeout + "[" + str(v) + "] should be between 1 and and 120 seconds"
 
-        if len(form[id_turnout_file].value) == 0 or len(form[id_turnout_file].value) > 11 :
+        if len(form[id_turnout_file].value) == 0 or len(form[id_turnout_file].value) > 11:
             return False, "Turnout file name length should be between 1 and 11"
 
-        return True,"Saved success"
+        return True, "Saved success"
 
     def isint(self, value):
         try:
@@ -382,7 +399,7 @@ class index:
         except:
             return False
 
-    def get_exitcode_stdout_stderr(self,cmd):
+    def get_exitcode_stdout_stderr(self, cmd):
         """
         Execute the external command and get its exitcode, stdout and stderr.
         """
@@ -400,7 +417,7 @@ class index:
         apmode_no_passwd = True
         create_logfile = True
         logappend = True
-        edserver=True
+        edserver = True
 
         if cm.getValueInsert("ap_mode", "True").lower() != "true":
             apmode = False
@@ -416,43 +433,64 @@ class index:
             edserver = False
 
         myform = form.Form(
-                form.Button(desc_btn_shutdown, id=id_btn_shutdown, value="shutdown", html="Shutdown"),
-                form.Checkbox(id_apmode,description=desc_apmode,checked=apmode,value="apmode",id="tapmode"),
-                form.Checkbox(id_apmode_no_passwd,description=desc_apmode_no_passwd,checked=apmode_no_passwd,value="apmode_no_passwd",id="tapmode_no_passwd"),
-                form.Textbox(id_ssid,ssid_length,description=desc_ssid,value=cm.getValueInsert("ap_ssid","canpiwi"),id="apssid"),
-                form.Textbox(id_password,passwd_length,description=desc_password, value=cm.getValueInsert("ap_password","12345678"),id="appasswd"),
-                form.Dropdown(id_channel, ['1', '2', '3','4','5','6','7','8','9','10','11','12','13'],value=cm.getValueInsert("ap_channel",6)),
-                form.Textbox(id_router_ssid,router_ssid_length,description=desc_router_ssid,value=cm.getValueInsert("router_ssid",""),id="routerssid"),
-                form.Textbox(id_router_password,router_passwd_length, description=desc_router_password,value=cm.getValueInsert("router_password",""),id="routerpasswd"),
-                form.Textbox(id_bonjour_name,service_name_length,description=desc_bonjour_name,value=cm.getValueInsert("service_name","MyLayout"),id="servicename"),
-                form.Textbox(id_ed_tcpport,description=desc_ed_tcpport,value=cm.getValueInsert("tcpport",5555),id="tcpport"),
-                form.Checkbox(id_grid_enable,description=desc_grid_enable,checked=gridenable,value="gridenable",id="cangrid"),
-                form.Checkbox(id_edserver,description=desc_edserver_code,checked=edserver,value="edserver",id="edserver"),
-                form.Textbox(id_grid_port,description=desc_grid_port,value=cm.getValueInsert("cangrid_port",5550),id="cangripport"),
-                form.Textbox(id_canid,description=desc_canid,value=cm.getValueInsert("canid",100)),
-                form.Textbox(id_start_event_id,description=desc_start_event,value=cm.getValueInsert(id_start_event_id,1)),
-                form.Textbox(id_orphan_timeout,description=desc_orphan_timeout,value=cm.getValueInsert(id_orphan_timeout,30)),
-                form.Textbox(id_shutdown_code,description=desc_shutdown_code,value=cm.getValueInsert(id_shutdown_code,-1)),
-                form.Textbox(id_fns_momentary,description=desc_fns_momentary,value=cm.getValueInsert("fn_momentary","2")),
-                form.Textbox(id_turnout_file,turnout_length,description=desc_turnout_file,value=cm.getValueInsert("turnout_file","turnout.txt")),
-                form.Dropdown(id_loglevel,  ['NOTSET', 'INFO', 'WARN', 'NOTICE', 'DEBUG'],value=cm.getValueInsert("loglevel","INFO")),
-                form.Checkbox(id_create_logfile,description=desc_create_logfile,checked=create_logfile,value=id_create_logfile,id="tcreate_logfile"),
-                form.Checkbox(id_logappend,description=desc_logappend,checked=logappend,value= id_logappend,id="tlogappend"),
-                #form.Textbox(id_logfile,description=,value=cm.getValue("logfile"),id="logfile"),
-                form.Button(desc_btn_save, id=id_btn_save, value="save", html="Save changes"),
-                form.Button(desc_btn_apply, id=id_btn_apply, value="apply", html="Apply changes and reboot"),
-                form.Button(desc_btn_stop, id=id_btn_stop, value="stop", html="Stop throttle service"),
-                form.Button(desc_btn_restart_all, id=id_btn_restart_all, value="stop", html="Restart throttle and configuration page"),
-                form.Button(desc_btn_restart, id=id_btn_restart, value="restart", html="Restart throttle service"),
-                form.Button(desc_btn_update_file, id=id_btn_update_file, value="upgrade", html="Upload upgrade file"),
-                form.Button(desc_btn_viewlog, id=id_btn_viewlog, value="viewlog", html="View logs"))
+            form.Button(desc_btn_shutdown, id=id_btn_shutdown, value="shutdown", html="Shutdown"),
+            form.Checkbox(id_apmode, description=desc_apmode, checked=apmode, value="apmode", id="tapmode"),
+            form.Checkbox(id_apmode_no_passwd, description=desc_apmode_no_passwd, checked=apmode_no_passwd,
+                          value="apmode_no_passwd", id="tapmode_no_passwd"),
+            form.Textbox(id_ssid, ssid_length, description=desc_ssid, value=cm.getValueInsert("ap_ssid", "canpiwi"),
+                         id="apssid"),
+            form.Textbox(id_password, passwd_length, description=desc_password,
+                         value=cm.getValueInsert("ap_password", "12345678"), id="appasswd"),
+            form.Dropdown(id_channel, ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13'],
+                          value=cm.getValueInsert("ap_channel", 6)),
+            form.Textbox(id_router_ssid, router_ssid_length, description=desc_router_ssid,
+                         value=cm.getValueInsert("router_ssid", ""), id="routerssid"),
+            form.Textbox(id_router_password, router_passwd_length, description=desc_router_password,
+                         value=cm.getValueInsert("router_password", ""), id="routerpasswd"),
+            form.Textbox(id_bonjour_name, service_name_length, description=desc_bonjour_name,
+                         value=cm.getValueInsert("service_name", "MyLayout"), id="servicename"),
+            form.Textbox(id_ed_tcpport, description=desc_ed_tcpport, value=cm.getValueInsert("tcpport", 5555),
+                         id="tcpport"),
+            form.Checkbox(id_grid_enable, description=desc_grid_enable, checked=gridenable, value="gridenable",
+                          id="cangrid"),
+            form.Checkbox(id_edserver, description=desc_edserver_code, checked=edserver, value="edserver",
+                          id="edserver"),
+            form.Textbox(id_grid_port, description=desc_grid_port, value=cm.getValueInsert("cangrid_port", 5550),
+                         id="cangripport"),
+            form.Textbox(id_canid, description=desc_canid, value=cm.getValueInsert("canid", 100)),
+            form.Textbox(id_start_event_id, description=desc_start_event,
+                         value=cm.getValueInsert(id_start_event_id, 1)),
+            form.Textbox(id_orphan_timeout, description=desc_orphan_timeout,
+                         value=cm.getValueInsert(id_orphan_timeout, 30)),
+            form.Textbox(id_shutdown_code, description=desc_shutdown_code,
+                         value=cm.getValueInsert(id_shutdown_code, -1)),
+            form.Textbox(id_fns_momentary, description=desc_fns_momentary,
+                         value=cm.getValueInsert("fn_momentary", "2")),
+            form.Textbox(id_turnout_file, turnout_length, description=desc_turnout_file,
+                         value=cm.getValueInsert("turnout_file", "turnout.txt")),
+            form.Dropdown(id_loglevel, ['NOTSET', 'INFO', 'WARN', 'NOTICE', 'DEBUG'],
+                          value=cm.getValueInsert("loglevel", "INFO")),
+            form.Checkbox(id_create_logfile, description=desc_create_logfile, checked=create_logfile,
+                          value=id_create_logfile, id="tcreate_logfile"),
+            form.Checkbox(id_logappend, description=desc_logappend, checked=logappend, value=id_logappend,
+                          id="tlogappend"),
+            # form.Textbox(id_logfile,description=,value=cm.getValue("logfile"),id="logfile"),
+            form.Button(desc_btn_save, id=id_btn_save, value="save", html="Save changes"),
+            form.Button(desc_btn_apply, id=id_btn_apply, value="apply", html="Apply changes and reboot"),
+            form.Button(desc_btn_stop, id=id_btn_stop, value="stop", html="Stop throttle service"),
+            form.Button(desc_btn_restart_all, id=id_btn_restart_all, value="stop",
+                        html="Restart throttle and configuration page"),
+            form.Button(desc_btn_restart, id=id_btn_restart, value="restart", html="Restart throttle service"),
+            form.Button(desc_btn_update_file, id=id_btn_update_file, value="upgrade", html="Upload upgrade file"),
+            form.Button(desc_btn_viewlog, id=id_btn_viewlog, value="viewlog", html="View logs"))
 
         return myform()
 
+
 class upload:
     def GET(self):
-        msg=readMessage()
-        web.header("Content-Type","text/html; charset=utf-8")
+        msg = readMessage()
+        web.header("Content-Type", "text/html; charset=utf-8")
         return """<html><head></head><body>
                   <header><h4>""" + msg + """</br></h4></header>
                   <form method="POST" enctype="multipart/form-data" action="">
@@ -464,24 +502,23 @@ class upload:
 
     def POST(self):
         x = web.input(myfile={})
-        filedir = '/home/pi/canpi/upgrade/' # change this to the directory you want to store the file in.
-        if 'myfile' in x: # to check if the file-object is created
-            filepath=x.myfile.filename.replace('\\','/') # replaces the windows-style slashes with linux ones.
-            filename=filepath.split('/')[-1] # splits the and chooses the last part (the filename with extension)
-            filepattern=re.compile(r"canpiwi-upgrade-\d+\.zip")
+        filedir = '/home/pi/canpi/upgrade/'  # change this to the directory you want to store the file in.
+        if 'myfile' in x:  # to check if the file-object is created
+            filepath = x.myfile.filename.replace('\\', '/')  # replaces the windows-style slashes with linux ones.
+            filename = filepath.split('/')[-1]  # splits the and chooses the last part (the filename with extension)
+            filepattern = re.compile(r"canpiwi-upgrade-\d+\.zip")
 
         if (filepattern.match(filename)):
-            fout = open(filedir +'/'+ filename,'w') # creates the file where the uploaded file should be stored
-                fout.write(x.myfile.file.read()) # writes the uploaded file to the newly created file.
-                fout.close() # closes the file, upload complete.
-                os.system("sudo /etc/init.d/start_canpi.sh upgrade")
-                writeMessage("Upgrade file copied and applied.");
-                #subprocess.call(['chmod', '+x', filedir +'/'+ filename])
+            fout = open(filedir + '/' + filename, 'w')  # creates the file where the uploaded file should be stored
+            fout.write(x.myfile.file.read())  # writes the uploaded file to the newly created file.
+            fout.close()  # closes the file, upload complete.
+            os.system("sudo /etc/init.d/canpi.sh upgrade")
+            writeMessage("Upgrade file copied and applied.")
         else:
             writeMessage("File name incorrect. The expected format is canpiwi-upgrade-number.zip<br>Example: canpiwi-upgrade-20160720.zip");
-                raise web.seeother('/upload')
-
+        raise web.seeother('/upload')
         raise web.seeother('/')
+
 
 class viewlog:
     def GET(self):
@@ -489,14 +526,15 @@ class viewlog:
         flog = open(logfile, 'r')  # open the logfile
         log = flog.read()
         flog.close()  # closes the file
-        web.header("Content-Type","text/html; charset=utf-8")
+        web.header("Content-Type", "text/html; charset=utf-8")
         return """<html><head></head><body>
                   <header><h4>""" + log + """</br></h4></header>                                    
                   <br/>                  
                   </form>
                   </body></html>"""
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     web.internalerror = web.debugerror
     web.config.debug = True
     app.run()

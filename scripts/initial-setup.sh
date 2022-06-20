@@ -181,9 +181,9 @@ systemctl enable isc-dhcp-server
 
 message_header "CONFIGURE SCRIPT FILES"
 cp "$canpidir/start_canpi.sh" /etc/init.d/
-chmod +x /etc/init.d/start_canpi.sh
-update-rc.d start_canpi.sh defaults
+chmod +x /etc/init.d/canpi.sh
+update-rc.d canpi.sh defaults
 
 message_header "CONFIGURE THE RASPBERRY PI AND REBOOT"
-/etc/init.d/start_canpi.sh configure
+/etc/init.d/canpi.sh configure
 

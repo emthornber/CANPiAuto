@@ -19,13 +19,13 @@ class tcpServer
     public:
         tcpServer(log4cpp::Category *logger, int port, canHandler* can, sessionHandler *session_handler, CLIENT_TYPE clientType);
         virtual ~tcpServer();
-        bool start();
+        virtual bool start();
         void setPort(int port);
         int getPort();
-        void stop();
+        virtual void stop();
         void removeClient(Client* client);
         void addCanMessage(int canid,const char* msg,int dlc);
-        CLIENT_TYPE getClientType(){return clientType;};
+        virtual CLIENT_TYPE getClientType(){return clientType;};
         void setTurnout(Turnout* turnouts);
         void postMessageToAllClients(int clientId,int canid,char *msg,int msize,CLIENT_TYPE ct);
         void setNodeConfigurator(nodeConfigurator *config);

@@ -204,7 +204,7 @@ class nodeConfigurator
         byte getNodeParameter(byte idx);
         /*
         * these functions are designed to be used dynamically,
-        * it means that a manual change in the file won't take imediate effect
+        * it means that a manual change in the file won't take immediate effect
         * a loadConfig is required
         */
         bool setNewPair(string key,string value,bool quoted); //creates a new one or update an existing one

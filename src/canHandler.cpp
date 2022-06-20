@@ -74,7 +74,7 @@ void canHandler::setPins(int pbutton,int gledpin,int yledpin){
     }
 }
 /**
- * @brief Sets the configurator object to extracte the module properties
+ * @brief Sets the configurator object to extract the module properties
  * @param config
  */
 void canHandler::setConfigurator(nodeConfigurator *config){
@@ -996,13 +996,13 @@ void canHandler::restart_module(SCRIPT_ACTIONS action){
     //MTA*<;>*
 
     if (action == CONFIGURE){
-        command = "/etc/init.d/start_canpi.sh configure";
+        command = "/etc/init.d/canpi.sh configure";
     }
     else if (action == RESTART){
-        command = "/etc/init.d/start_canpi.sh restart";
+        command = "/etc/init.d/canpi.sh restart";
     }
     else if (action == SHUTDOWN){
-        command = "/etc/init.d/start_canpi.sh shutdown";
+        command = "/etc/init.d/canpi.sh shutdown";
     }
     else{
         return;

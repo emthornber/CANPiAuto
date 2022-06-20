@@ -15,8 +15,8 @@ KillMode=process
 GuessMainPID=no
 RemainAfterExit=yes
 SuccessExitStatus=NOTINSTALLED NOTCONFIGURED
-ExecStart=/etc/init.d/start_canpi.sh start
-ExecStop=/etc/init.d/start_canpi.sh stop
+ExecStart=/usr/local/bin/start_canpi.sh start
+ExecStop=/usr/local/bin/start_canpi.sh stop
 
 [Install]
 WantedBy=multi-user.target

@@ -87,26 +87,19 @@ int main()
     if (!debugLevel.empty()){
         if (debugLevel.compare(TAG_INFO) == 0){
            loglevel = log4cpp::Priority::INFO;
-        }
-        if (debugLevel.compare(TAG_WARN) == 0){
+        } else if (debugLevel.compare(TAG_WARN) == 0){
            loglevel = log4cpp::Priority::WARN;
-        }
-        if (debugLevel.compare(TAG_NOTICE) == 0){
+        } else if (debugLevel.compare(TAG_NOTICE) == 0){
            loglevel = log4cpp::Priority::NOTICE;
-        }
-        if (debugLevel.compare(TAG_FATAL) == 0){
+        } else if (debugLevel.compare(TAG_FATAL) == 0){
            loglevel = log4cpp::Priority::FATAL;
-        }
-        if (debugLevel.compare(TAG_ERROR) == 0){
+        } else if (debugLevel.compare(TAG_ERROR) == 0){
            loglevel = log4cpp::Priority::ERROR;
-        }
-        if (debugLevel.compare(TAG_EMERG) == 0){
+        } else if (debugLevel.compare(TAG_EMERG) == 0){
            loglevel = log4cpp::Priority::EMERG;
-        }
-        if (debugLevel.compare(TAG_ALERT) == 0){
+        } else if (debugLevel.compare(TAG_ALERT) == 0){
            loglevel = log4cpp::Priority::ALERT;
-        }
-        if (debugLevel.compare(TAG_NOTSET) == 0){
+        } else if (debugLevel.compare(TAG_NOTSET) == 0){
            loglevel = log4cpp::Priority::NOTSET;
         }
     }
@@ -150,7 +143,7 @@ int main()
         appender2->setLayout(layout2);
         logger.addAppender(appender2);
     }
-    logger.info("Logger initated");
+    logger.info("Logger initiated");
 
     //config->printMemoryNVs();
 
@@ -172,8 +165,8 @@ int main()
     //start the session handler
     sessionHandler session_handler = sessionHandler(&logger, config, &can);
 	session_handler.start();
-    //start the tcp server
 
+    //start the tcp servers
     tcpServer *edserver;
     if (start_ed_server){
         //load the turnout file
@@ -202,8 +195,6 @@ int main()
     while (running == 1){usleep(1000000);};
 
     //finishes
-    logger.info("Stopping the session handler");
-    session_handler.stop();
     if (start_ed_server){
         logger.info("Stopping the ed server");
         edserver->stop();
@@ -213,6 +204,9 @@ int main()
         logger.info("Stopping the grid server");
         gridserver->stop();
     }
+
+    logger.info("Stopping the session handler");
+    session_handler.stop();
 
     logger.info("Stopping CBUS reader");
     can.stop();

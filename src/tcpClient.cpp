@@ -1228,7 +1228,7 @@ void tcpClient::handleTurnout(string message){
 void tcpClient::shutdown(){
 
     logger->debug("[tcpClient] Shutting down the module");
-    string command = "/etc/init.d/start_canpi.sh shutdown";
+    string command = "/etc/init.d/canpi.sh shutdown";
 
     usleep(1000*1000);
     if(fork() == 0){
