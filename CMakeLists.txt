@@ -43,9 +43,18 @@ add_executable(canpi
         src/Turnout.h
         src/utils.h)
 
+add_library(log4cpp SHARED IMPORTED)
+set_property(TARGET log4cpp PROPERTY
+		IMPORTED_LOCATION "/usr/lib/x86_64-linux-gnu/liblog4cpp.so.5.0.6")
+add_library(pthread SHARED IMPORTED)
+set_property(TARGET pthread PROPERTY
+		IMPORTED_LOCATION "/usr/lib/x86_64-linux-gnu/libpthread.so")
+
 target_compile_options(canpi PRIVATE -c -Wall -fpermissive -lm -g)
-target_include_directories(canpi PRIVATE /usr/local/include /usr/include)
-target_link_directories(canpi PRIVATE /usr/local/lib /usr/lib)
+target_include_directories(canpi PUBLIC /usr/include)
+target_include_directories(canpi PUBLIC /usr/local/include)
+target_link_directories(canpi PRIVATE /usr/local/lib
+		/usr/lib)
 target_link_libraries(canpi PUBLIC log4cpp pthread)
 
 add_executable(testcfg
