@@ -1,14 +1,16 @@
 # these are cache variables, so they could be overwritten with -D,
+set(CPACK_GENERATOR "DEB")
+
 set(
-    CPACK_PACKAGE_NAME ${PROJECT_NAME}
+    CPACK_PACKAGE_NAME "MERG-${PROJECT_NAME}"
     CACHE STRING "The resulting package name"
 )
 # which is useful in case of packing only selected components instead of the whole thing
 set(
-    CPACK_PACKAGE_DESCRIPTION_SUMMARY "Simple C++ application"
+    CPACK_PACKAGE_DESCRIPTION_SUMMARY "MERG CBUS interface"
     CACHE STRING "Package description for the package metadata"
 )
-set(CPACK_PACKAGE_VENDOR "Some Company")
+set(CPACK_PACKAGE_VENDOR "Enchanted Systems Limited")
 
 set(CPACK_VERBATIM_VARIABLES YES)
 
@@ -23,14 +25,14 @@ set(
     WORLD_READ WORLD_EXECUTE
 )
 
-set(CPACK_PACKAGING_INSTALL_PREFIX "/opt/some")#/${CMAKE_PROJECT_VERSION}")
+set(CPACK_PACKAGING_INSTALL_PREFIX "/usr/local")#/${CMAKE_PROJECT_VERSION}")
 
 set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
 set(CPACK_PACKAGE_VERSION_PATCH ${PROJECT_VERSION_PATCH})
 
-set(CPACK_PACKAGE_CONTACT "YOUR@E-MAIL.net")
-set(CPACK_DEBIAN_PACKAGE_MAINTAINER "YOUR NAME <${CPACK_PACKAGE_CONTACT}>")
+set(CPACK_PACKAGE_CONTACT "enchanted.systems@btinternet.com")
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "E M Thornber <${CPACK_PACKAGE_CONTACT}>")
 
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
@@ -48,6 +50,9 @@ set(CPACK_DEB_COMPONENT_INSTALL YES)
 # list dependencies
 set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS YES)
 
+# Specific settings for Debian packages
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "log4cpp pthreads python3")
+set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${CMAKE_CURRENT_SOURCE_DIR}/scripts/postinst;${CMAKE_CURRENT_SOURCE_DIR}/scripts/prerm")
 include(CPack)
 
 # optionally, you can add various meta information to the components defined in INSTALLs

@@ -14,3 +14,5 @@ copyfiles.sh
 venv/
 /cmake-build-rpi3buildlocal/
 /cmake-build-rpi3buildremote/
+
+*.log

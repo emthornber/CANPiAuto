@@ -89,7 +89,7 @@ class configManager:
         #move the file
         if os.path.exists(tmpfile):
             print("Moving the file")
-           shutil.move(tmpfile,configpath)
+            shutil.move(tmpfile,configpath)
 
 cm = configManager()
 cm.readConfig()
@@ -472,14 +472,14 @@ class upload:
 
         if (filepattern.match(filename)):
             fout = open(filedir +'/'+ filename,'w') # creates the file where the uploaded file should be stored
-                fout.write(x.myfile.file.read()) # writes the uploaded file to the newly created file.
-                fout.close() # closes the file, upload complete.
-                os.system("sudo /etc/init.d/start_canpi.sh upgrade")
-                writeMessage("Upgrade file copied and applied.");
-                #subprocess.call(['chmod', '+x', filedir +'/'+ filename])
+            fout.write(x.myfile.file.read()) # writes the uploaded file to the newly created file.
+            fout.close() # closes the file, upload complete.
+            os.system("sudo /etc/init.d/start_canpi.sh upgrade")
+            writeMessage("Upgrade file copied and applied.");
+            #subprocess.call(['chmod', '+x', filedir +'/'+ filename])
         else:
             writeMessage("File name incorrect. The expected format is canpiwi-upgrade-number.zip<br>Example: canpiwi-upgrade-20160720.zip");
-                raise web.seeother('/upload')
+            raise web.seeother('/upload')
 
         raise web.seeother('/')
 
