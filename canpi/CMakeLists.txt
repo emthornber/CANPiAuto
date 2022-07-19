@@ -71,31 +71,42 @@ endif()
 
 target_link_libraries(${PROJECT_NAME} PUBLIC log4cpp pthread)
 
+add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.deb
+        COMMAND BFILE=$<TARGET_FILE:${PROJECT_NAME}> ODIR=${CMAKE_CURRENT_BINARY_DIR} make -f ${CMAKE_CURRENT_SOURCE_DIR}/package/Makefile all && touch ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.package
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}.epm $<TARGET_FILE:${PROJECT_NAME}>
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+
+add_custom_target(create_package ALL
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.deb
+)
+
 # Where to find your CMake modules
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
-include(InstallingConfigs)
-include(InstallingGeneral)
-include(Packing)
+#set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+#include(InstallingConfigs)
+#include(InstallingGeneral)
+#include(Packing)
 
-install(TARGETS canpi
-        RUNTIME DESTINATION bin)
-
-    install(PROGRAMS
-            scripts/start_canpi.sh
-        DESTINATION bin)
-
-install(FILES
-            config/canpi.service
-        DESTINATION /lib/systemd/system)
-
-install(FILES
-            config/can0.conf
-        DESTINATION /etc/network/interfaces.d)
-
-install(FILES
-            config/canpi.cfg
-            config/turnout.txt
-        DESTINATION etc/${PROJECT_NAME})
-
-install(DIRECTORY webserver
-        DESTINATION etc/${PROJECT_NAME})
+#set(PKGDIR "${CMAKE_CURRENT_SOURCE_DIR}/package/tmp")
+#install(TARGETS canpi
+#        RUNTIME DESTINATION ${PKGDIR}/bin)
+#
+#    install(PROGRAMS
+#            scripts/start_canpi.sh
+#        DESTINATION ${PKGDIR}/bin)
+#
+#install(FILES
+#            config/canpi.service
+#        DESTINATION ${PKGDIR}/config)
+#
+#install(FILES
+#            config/can0.conf
+#        DESTINATION ${PKGDIR}/config)
+#
+#install(FILES
+#            config/canpi.cfg
+#            config/turnout.txt
+#        DESTINATION ${PKGDIR}/etc)
+#
+#install(DIRECTORY webserver
+#        DESTINATION ${PKGDIR}/etc)

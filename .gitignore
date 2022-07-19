@@ -16,3 +16,6 @@ venv/
 /cmake-build-rpi3buildremote/
 
 *.log
+/canpi/_CPack_Packages/
+/canpi/package/tmp/
+/install/
