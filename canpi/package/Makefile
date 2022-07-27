@@ -24,7 +24,7 @@ clean:
 pkgs: portable deb
 
 portable:
-	sudo $(EPM) -f portable -vv --output-dir $(ODIR) binary=$(BFILE) srcdir="./" $(PKGNAME) ./$(PKGDEFN) | tee portable-$(TS).log
+	sudo $(EPM) -a armhf -f portable -vv --output-dir $(ODIR) binary=$(BFILE) srcdir="./" $(PKGNAME) ./$(PKGDEFN) | tee portable-$(TS).log
 
 deb:
-	sudo $(EPM) -f deb -vv --output-dir $(ODIR) binary=$(BFILE) srcdir="./" $(PKGNAME) ./$(PKGDEFN) | tee deb-$(TS).log
+	sudo $(EPM) -a armhf -f deb -vv --output-dir $(ODIR) binary=$(BFILE) srcdir="./" $(PKGNAME) ./$(PKGDEFN) | tee deb-$(TS).log

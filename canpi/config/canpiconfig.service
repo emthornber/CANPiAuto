@@ -4,8 +4,9 @@ Before=multi-user.target
 Before=graphical.target
 After=remote-fs.target
 After=network-online.target
+After=canpi.service
 Wants=network-online.target
-PartOf=canpi.service
+BindsTo=canpi.service
 
 [Service]
 Type=simple
