@@ -51,7 +51,7 @@ set(CPACK_DEB_COMPONENT_INSTALL YES)
 set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS YES)
 
 # Specific settings for Debian packages
-set(CPACK_DEBIAN_PACKAGE_DEPENDS "log4cpp pthreads python3")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "log4cpp pthreads")
 set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${CMAKE_CURRENT_SOURCE_DIR}/scripts/postinst;${CMAKE_CURRENT_SOURCE_DIR}/scripts/prerm")
 include(CPack)
 
