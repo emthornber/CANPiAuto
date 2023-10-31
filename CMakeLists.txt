@@ -12,6 +12,3 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #include(CTest)
 
 add_subdirectory(canpi)
-#add_subdirectory(hello_test)
-#add_subdirectory(testing)
-#add_subdirectory(testregex)
