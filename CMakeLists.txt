@@ -8,7 +8,8 @@ project("CANPiAuto"
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-include(CTest)
+# Cannot run any tests as we are cross-compiling for armv6 (RPiZeroW)
+#include(CTest)
 
 add_subdirectory(canpi)
 #add_subdirectory(hello_test)
