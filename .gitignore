@@ -12,3 +12,10 @@ canpi.log
 cmake-build-debug/
 copyfiles.sh
 venv/
+/cmake-build-rpi3buildlocal/
+/cmake-build-rpi3buildremote/
+CMakeFiles/
+cmake_install.cmake
+CMakeCache.txt
+*.idx
+*.log
