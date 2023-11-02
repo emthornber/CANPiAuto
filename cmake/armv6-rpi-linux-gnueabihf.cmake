@@ -9,7 +9,7 @@ set(CMAKE_SYSTEM_PROCESSOR arm)
 set(CMAKE_SYSROOT /var/lib/schroot/chroots/rpizero-bullseye-armhf)
 set(CMAKE_FIND_ROOT_PATH ${CMAKE_SYSROOT})
 set(CMAKE_LIBRARY_ARCHITECTURE arm-linux-gnueabihf)
-set(CMAKE_INSTALL_PREFIX $ENV{HOME}/RPi-dev/staging-armv6-rpi)
+#set(CMAKE_INSTALL_PREFIX $ENV{HOME}/RPi-dev/staging-armv6-rpi)
 
 # Set the compilers for C, C++ and Fortran
 set(RPI_GCC_TRIPLE "armv6-rpi-linux-gnueabihf")
